@@ -1,0 +1,90 @@
+
+ANN1.ipynb
+ANN1.ipynb_
+ANN implemetation of XOR
+
+AIM: To implement XOR GATE using ANN
+
+THEORY: Implementing logic gates using neural networks help understand the mathematical computation by which a neural network processes its inputs to arrive at a certain output. This neural network will deal with the XOR logic problem. An XOR (exclusive OR gate) is a digital logic gate that gives a true output only when both its inputs differ from each other. The truth table for an XOR gate is shown below: image.png
+
+The goal of the neural network is to classify the input patterns according to the above truth table. If the input patterns are plotted according to their outputs, it is seen that these points are not linearly separable. Hence the neural network has to be modeled to separate these input patterns using decision planes.
+
+IMPLEMENTATION:
+
+[ ]
+import numpy as np 
+import pandas as pd 
+import matplotlib.pyplot as plt
+
+import os
+for dirname, _, filenames in os.walk('/kaggle/input'):
+    for filename in filenames:
+        print(os.path.join(dirname, filename))
+[ ]
+data = [[0,0,1,1],[0,1,0,1]]
+X = np.array(data)
+[ ]
+result_xor = [[0,1,1,0]]
+ANN MODEL IMPLEMENTATION
+
+[ ]
+Y = np.array(result_xor)
+
+def activate(x):
+    return 1/(1+np.exp(-x))
+    
+def intialize_params(inputfeatures , hiddenneurons , outputfeatures):
+    W1=np.random.randn(hiddenneurons, inputfeatures)
+    W2=np.random.randn(outputfeatures, hiddenneurons)
+    b1=np.zeros((hiddenneurons,1))
+    b2=np.zeros((outputfeatures,1))
+
+
+[ ]
+X_new = np.array([[1, 1, 0, 0], [0, 1, 0, 1]]) 
+# print(X)
+_, _, A2 = forward(X_new, Y, params)
+print(A2)
+prediction = np.zeros((A2.size))
+
+for a in A2:
+    for i in range(4):
+        if(a[i]>0.5):
+            prediction[i]=1.0
+
+print(prediction)
+[[0.99011683 0.50298039 0.00951482 0.49610106]]
+[1. 1. 0. 0.]
+[ ]
+X = np.array([[1,1],[1,0],[0,1],[0,0]]) 
+X_new = np.array([[1,0],[1,1],[0,0],[0,1]]) 
+result_xor = [0,1,1,0]
+Y= np.array(result_xor)
+[ ]
+from sklearn.neural_network import MLPClassifier
+clf = MLPClassifier(solver='lbfgs', alpha=0.00001 ,hidden_layer_sizes=(5, 4), random_state=1)
+clf.fit(X, Y)
+Y_pred= clf.predict(X_new)
+print(Y_pred)
+[1 0 0 1]
+XOR MODEL
+
+[ ]
+def Step_activation(x):
+    if x>=0:
+        return 1
+    else:
+        return 0
+
+def model(x,w,b):
+    o1= np.dot(x,w)+ b
+    y= Step_activation(o1)
+    return y
+
+OR(0, 0) = 0
+OR(0, 1) = 1
+OR(1, 0) = 1
+OR(1, 1) = 1
+CONCLUSION: We have learnt how to implenet XOR GATE using ANN in python
+
+To undo cell-level action use Ctrl+M Z
